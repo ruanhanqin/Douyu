@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>tpl</title>
+    <style>
+    	.odd{
+    		background-color:#e6f3f8
+    	}
+    	.even{
+    			background-color:#f9f9f9
+    	}
+    </style>
+ <script src="../build/mini-tpl.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script id="tplContent" type="text/html">
+    <table  align='center' id="idid" name='namename'>
+    <% for(var i=0; i<data.length; i++){
+        var item = data[i];
+        if(i%2==0){
+        cls="odd"
+        }
+      else{
+      	cls="even"
+      }
+        %>
+        		<tr class=<%=cls%>>
+            <td width=30%><%=item.name%></td><td width=30% ><%=item.age%></td>
+            </tr>
+    <% } %>
+    </table>
+    </script>
+
+
+
+
+<script>
+
+function updateSome(data) {
+    var content = document.getElementById('tplContent').innerHTML;
+    var result = miniTpl(content, data);
+        document.getElementById('root').innerHTML = result;
+}
+var data = [{ name: 'tom', age: 12 }, { name: 'lily', age: 24 }, { name: 'lucy', age: 55 }];
+updateSome(data)
+
+/*
+** Ajax get data
+
+$.getJSON('xxx', function (result) {
+    updateSome(result);
+});
+
+***
+*/
+ </script>
+</body>
+</html>

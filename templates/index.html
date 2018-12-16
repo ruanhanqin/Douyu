@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Douyu Lottery</title>
+    <script src="../static/mini-tpl-master/build/mini-tpl.js"></script>
+    <script src="../static/jquery-3.3.1.js"></script>
+    <style>
+        .odd {
+            background-color: #e6f3f8;
+            font-size: 13px;
+        }
+
+        .even {
+            background-color: #f9f9f9;
+            font-size: 13px;
+        }
+
+        .tt {
+            background-color: #21aee7;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<p align="right">
+    <button onclick="refresh(this)">刷新</button>
+</p>
+
+<div class="div" id="root"></div>
+<script id="tplContent" type="text/html">
+    <table align='center' id="idid" name='namename'>
+        <tr class="tt" align="center">
+            <td width="10%">房间号</td>
+            <td width="15%">房间名称</td>
+            <td width="10%">奖品名称</td>
+            <td width="5%">数量</td>
+            <td width="20%">抽奖条件</td>
+            <td width="12%">开始时间</td>
+            <td width="15%">抽奖口令/礼品</td>
+        </tr>
+        <% for(var i=0; i<data.length; i++){
+                     var item=data[i];
+                     if(i%2==0){
+                     cls="odd"
+                     }
+                     else{
+                     cls="even"
+                     }
+                     %>
+            <tr class=<%=cls%>>
+                <td align="center"><a href="https://www.douyu.com/<%=item.room_id%>"><%=item.room_id%></a></td>
+                <td><%=item.room_name%></td>
+                <td><%=item.prize_name%></td>
+                <td align="center"><%=item.prize_num%></td>
+                <td><%=item.lottery_range%></td>
+                <td align="center"><%=item.start_time%></td>
+                <td><%=item.command_content%></td>
+            </tr>
+            <% } %>
+    </table>
+</script>
+<script>
+    function update_table(data) {
+        var content = document.getElementById('tplContent').innerHTML;
+        var result = miniTpl(content, data);
+        document.getElementById('root').innerHTML = result;
+    }
+
+    function refresh() {
+        $.getJSON('/get_ajax', function (result) {
+                update_table(result)
+            }
+        )
+    }
+    $(document).ready(function () {
+        refresh(this)
+    });
+</script>
+</body>
+</html>
